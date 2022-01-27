@@ -1,10 +1,14 @@
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 
 public class PasswordGenerator {
-    public static void main(String args[]){
+    public static void main(String args[]) throws IOException {
 
         Scanner in = new Scanner(System.in);
 
@@ -179,16 +183,27 @@ public class PasswordGenerator {
             mixedValued = mixLettersAndNumbers(upperCaseArray, lowerCaseArray, numbers);
         }
 
-        in.close();
-
-        System.out.println(Arrays.toString(mixedValued));
-        System.out.println(mixedValued.length);
 
         generatedPassword = getPassword(mixedValued, passwordLength);
 
         System.out.println("New Password is: " + generatedPassword);
 
-        System.out.println("Would you like to ");
+        System.out.println("Would you like to have the password added to a file: Y or N");
+
+        if(in.next().equals("Y")){
+            System.out.println("What is the path of your file? :");
+            String pathFile = in.next();
+            PrintWriter out = new PrintWriter(new FileWriter(pathFile, true));
+            System.out.println("What is name of website: ");
+            String websiteName = in.next();
+
+            out.println("Website: " + websiteName + "   |   Password: " + generatedPassword);
+            out.close();
+        }
+        else{
+            System.out.println("Thank you!");
+        }
+        in.close();
     }
 
 
@@ -258,7 +273,7 @@ public class PasswordGenerator {
         int randonNumber = 0;
         for(int i = 0; i < passwordLength; i++){
             randonNumber = rand.nextInt(lengthOfTotalArray);
-            System.out.println("What random number to pick " + randonNumber);
+            // System.out.println("What random number to pick " + randonNumber);
             newPasword = newPasword + mixedArrayWithAllPossibleValues[randonNumber];
         }
 
